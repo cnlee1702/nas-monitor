@@ -80,9 +80,9 @@ Automated dependency updates:
 
 | Workflow | Status | Purpose |
 |----------|--------|---------|
-| CI | ![CI](https://github.com/yourusername/nas-monitor/workflows/Continuous%20Integration/badge.svg) | Continuous testing and quality checks |
-| CodeQL | ![CodeQL](https://github.com/yourusername/nas-monitor/workflows/CodeQL/badge.svg) | Security vulnerability scanning |
-| Release | ![Release](https://github.com/yourusername/nas-monitor/workflows/Release/badge.svg) | Automated release creation |
+| CI | ![CI](https://github.com/cnlee1702/nas-monitor/workflows/Continuous%20Integration/badge.svg) | Continuous testing and quality checks |
+| CodeQL | ![CodeQL](https://github.com/cnlee1702/nas-monitor/workflows/CodeQL/badge.svg) | Security vulnerability scanning |
+| Release | ![Release](https://github.com/cnlee1702/nas-monitor/workflows/Release/badge.svg) | Automated release creation |
 
 ## Branch Protection
 
@@ -95,13 +95,13 @@ The `master` branch is protected with the following rules:
 ## Contributing Workflow
 
 ### For Bug Reports
-1. Check [existing issues](https://github.com/yourusername/nas-monitor/issues) first
+1. Check [existing issues](https://github.com/cnlee1702/nas-monitor/issues) first
 2. Read the [troubleshooting guide](../docs/troubleshooting.md)
 3. Use the [bug report template](.github/ISSUE_TEMPLATE/bug_report.yml)
 4. Include all requested information
 
 ### For Feature Requests
-1. Check [existing issues](https://github.com/yourusername/nas-monitor/issues) and [discussions](https://github.com/yourusername/nas-monitor/discussions)
+1. Check [existing issues](https://github.com/cnlee1702/nas-monitor/issues) and [discussions](https://github.com/cnlee1702/nas-monitor/discussions)
 2. Consider starting a discussion first for large features
 3. Use the [feature request template](.github/ISSUE_TEMPLATE/feature_request.yml)
 4. Provide clear use cases and examples
@@ -197,8 +197,8 @@ Before major releases:
 ### Getting Help
 1. **Documentation**: Start with the [docs](../docs/) directory
 2. **FAQ**: Check the [frequently asked questions](../docs/faq.md)
-3. **Issues**: Search [existing issues](https://github.com/yourusername/nas-monitor/issues)
-4. **Discussions**: Join [community discussions](https://github.com/yourusername/nas-monitor/discussions)
+3. **Issues**: Search [existing issues](https://github.com/cnlee1702/nas-monitor/issues)
+4. **Discussions**: Join [community discussions](https://github.com/cnlee1702/nas-monitor/discussions)
 
 ### Community Guidelines
 - Be respectful and inclusive
