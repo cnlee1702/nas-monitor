@@ -273,7 +273,7 @@ static void update_config_from_ui(AppData *app) {
         GTK_TOGGLE_BUTTON(app->notifications_check));
 }
 
-static void on_add_nas_clicked(GtkButton *button, AppData *app) {
+static void on_add_nas_clicked(GtkButton *button __attribute__((unused)), AppData *app) {
     GtkWidget *dialog = gtk_dialog_new_with_buttons(
         "Add NAS Device",
         GTK_WINDOW(app->window),
@@ -305,7 +305,7 @@ static void on_add_nas_clicked(GtkButton *button, AppData *app) {
     gtk_widget_destroy(dialog);
 }
 
-static void on_remove_nas_clicked(GtkButton *button, AppData *app) {
+static void on_remove_nas_clicked(GtkButton *button __attribute__((unused)), AppData *app) {
     GtkListBoxRow *selected = gtk_list_box_get_selected_row(GTK_LIST_BOX(app->nas_listbox));
     if (!selected) {
         show_info(app->window, "Please select a NAS device to remove.");
@@ -323,12 +323,12 @@ static void on_remove_nas_clicked(GtkButton *button, AppData *app) {
     update_ui_from_config(app);
 }
 
-static void on_save_clicked(GtkButton *button, AppData *app) {
+static void on_save_clicked(GtkButton *button __attribute__((unused)), AppData *app) {
     update_config_from_ui(app);
     save_config(app);
 }
 
-static void on_restart_service_clicked(GtkButton *button, AppData *app) {
+static void on_restart_service_clicked(GtkButton *button __attribute__((unused)), AppData *app) {
     int result = system("systemctl --user restart nas-monitor.service 2>/dev/null");
     if (result == 0) {
         gtk_label_set_text(GTK_LABEL(app->status_label), 
