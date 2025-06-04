@@ -39,6 +39,7 @@ test-configs/manual-test-*
 /tmp/nas-monitor-test*
 
 # Test artifacts - runtime generated
+test/test-configs/valid-config.conf
 test/test-configs/manual-test-*
 test/test-configs/integration-*
 test/test-configs/stress-*
@@ -47,7 +48,8 @@ test/test-configs/performance-*
 /tmp/nas-monitor-*test*
 
 # Keep static test templates
-!test/test-configs/valid-*.conf
-!test/test-configs/invalid-*.conf
+!test/test-configs/valid-basic.conf
+!test/test-configs/valid-complex.conf
+!test/test-configs/invalid-config.conf
 !test/test-configs/minimal.conf
 !test/test-configs/README.md
