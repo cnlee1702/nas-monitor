@@ -664,6 +664,13 @@ main() {
     echo -e "${BLUE}  NAS Monitor Performance Test Suite   ${NC}"
     echo -e "${BLUE}========================================${NC}"
     echo
+
+    # Check if NAS Monitor is installed
+    if ! systemctl --user list-unit-files nas-monitor.service >/dev/null 2>&1; then
+        echo -e "${YELLOW}NAS Monitor not installed - skipping performance tests${NC}"
+        echo "Install first with: make install"
+        exit 0
+    fi
     
     # Check for required tools
     if ! command -v bc >/dev/null 2>&1; then
