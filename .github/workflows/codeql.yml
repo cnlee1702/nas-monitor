@@ -12,6 +12,9 @@ jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
+    env:
+      DEBIAN_FRONTEND: noninteractive
+      TZ: UTC
     permissions:
       actions: read
       contents: read
@@ -41,7 +44,7 @@ jobs:
       if: matrix.language == 'c'
       run: |
         make clean
-        make nas-config-gui
+        make all
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
