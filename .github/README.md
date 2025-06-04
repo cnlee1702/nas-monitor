@@ -6,7 +6,7 @@ This directory contains GitHub-specific configuration files for the NAS Monitor 
 
 We use structured issue templates to help gather the right information for different types of issues:
 
-### 🐛 [Bug Reports](.github/ISSUE_TEMPLATE/bug_report.yml)
+### 🐛 [Bug Reports](ISSUE_TEMPLATE/bug_report.yml)
 Use this template when something isn't working as expected. The template collects:
 - System information (OS, desktop environment)
 - NAS Monitor version and configuration
@@ -14,14 +14,14 @@ Use this template when something isn't working as expected. The template collect
 - Service logs and status
 - Expected vs actual behavior
 
-### ✨ [Feature Requests](.github/ISSUE_TEMPLATE/feature_request.yml)
+### ✨ [Feature Requests](ISSUE_TEMPLATE/feature_request.yml)
 Use this template to suggest new features or enhancements. It helps us understand:
 - The problem or use case you're trying to solve
 - Your proposed solution
 - Priority and complexity estimates
 - Examples of how the feature would be used
 
-### ❓ [Questions](.github/ISSUE_TEMPLATE/question.yml)
+### ❓ [Questions](ISSUE_TEMPLATE/question.yml)
 Use this template for usage questions or configuration help. It includes:
 - Question categorization
 - Current setup context
@@ -29,14 +29,14 @@ Use this template for usage questions or configuration help. It includes:
 - Relevant configuration and logs
 
 ### Configuration
-The [config.yml](.github/ISSUE_TEMPLATE/config.yml) file:
+The [config.yml](ISSUE_TEMPLATE/config.yml) file:
 - Disables blank issues to encourage using templates
 - Provides quick links to documentation and discussions
 - Helps users find existing answers before creating new issues
 
 ## Pull Request Template
 
-The [pull request template](.github/pull_request_template.md) ensures contributors provide:
+The [pull request template](pull_request_template.md) ensures contributors provide:
 - Clear description of changes
 - Type of change (bug fix, feature, etc.)
 - Testing information
@@ -45,7 +45,7 @@ The [pull request template](.github/pull_request_template.md) ensures contributo
 
 ## GitHub Actions Workflows
 
-### 🔍 [Continuous Integration](.github/workflows/ci.yml)
+### 🔍 [Continuous Integration](workflows/ci.yml)
 Runs on every push and pull request:
 - **Testing**: Unit tests, integration tests, build verification
 - **Quality**: ShellCheck linting, code analysis
@@ -54,7 +54,7 @@ Runs on every push and pull request:
 - **Security**: File permission checks, sensitive data scanning
 - **Documentation**: Validates documentation completeness
 
-### 🚀 [Release](.github/workflows/release.yml)
+### 🚀 [Release](workflows/release.yml)
 Automated release process triggered by version tags:
 - Creates GitHub releases with changelog
 - Builds and attaches source packages
@@ -62,14 +62,14 @@ Automated release process triggered by version tags:
 - Updates version references in documentation
 - Notifies of success/failure
 
-### 🛡️ [CodeQL Security](.github/workflows/codeql.yml)
+### 🛡️ [CodeQL Security](workflows/codeql.yml)
 Security analysis using GitHub's CodeQL:
 - Scans C code and shell scripts
 - Runs weekly and on main branch changes
 - Identifies potential security vulnerabilities
 - Integrates with GitHub Security tab
 
-### 📦 [Dependabot](.github/dependabot.yml)
+### 📦 [Dependabot](dependabot.yml)
 Automated dependency updates:
 - Monitors GitHub Actions for updates
 - Creates PRs for security and feature updates
@@ -97,13 +97,13 @@ The `master` branch is protected with the following rules:
 ### For Bug Reports
 1. Check [existing issues](https://github.com/cnlee1702/nas-monitor/issues) first
 2. Read the [troubleshooting guide](../docs/troubleshooting.md)
-3. Use the [bug report template](.github/ISSUE_TEMPLATE/bug_report.yml)
+3. Use the [bug report template](ISSUE_TEMPLATE/bug_report.yml)
 4. Include all requested information
 
 ### For Feature Requests
 1. Check [existing issues](https://github.com/cnlee1702/nas-monitor/issues) and [discussions](https://github.com/cnlee1702/nas-monitor/discussions)
 2. Consider starting a discussion first for large features
-3. Use the [feature request template](.github/ISSUE_TEMPLATE/feature_request.yml)
+3. Use the [feature request template](ISSUE_TEMPLATE/feature_request.yml)
 4. Provide clear use cases and examples
 
 ### For Code Contributions
