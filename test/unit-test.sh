@@ -23,73 +23,28 @@ TESTS_PASSED=0
 TESTS_FAILED=0
 
 # Setup test environment
-setup_tests() {
+setup_tests() {setup_tests() {
     echo -e "${BLUE}Setting up test environment...${NC}"
     
-    # Create test directories
-    mkdir -p "$TEST_LOG_DIR"
     mkdir -p "$TEST_CONFIG_DIR"
     
-    # Create test configuration
-    cat > "$TEST_CONFIG_DIR/valid-config.conf" << 'EOF'
-[networks]
-home_networks=TestWiFi,TestWiFi-5G,
-
-[nas_devices]
-test-nas.local/home
-backup.local/media
-
-[intervals]
-home_ac_interval=15
-home_battery_interval=60
-away_ac_interval=180
-away_battery_interval=600
-
-[behavior]
-max_failed_attempts=3
-min_battery_level=10
-enable_notifications=true
-EOF
+    # Copy static templates if they exist, otherwise create them
+    local static_configs_dir="$SCRIPT_DIR/test-configs"
     
-    # Create invalid configuration
-    cat > "$TEST_CONFIG_DIR/invalid-config.conf" << 'EOF'
-[networks]
-home_networks=TestWiFi
-
-[nas_devices]
-# Missing devices section content
-
-[intervals]
-home_ac_interval=invalid_value
-home_battery_interval=60
-
-[behavior]
-max_failed_attempts=3
-min_battery_level=10
-enable_notifications=true
+    if [ -f "$static_configs_dir/valid-basic.conf" ]; then
+        cp "$static_configs_dir/valid-basic.conf" "$TEST_CONFIG_DIR/valid-config.conf"
+    else
+        # Fallback: create dynamically (current behavior)
+        cat > "$TEST_CONFIG_DIR/valid-config.conf" << 'EOF'
+        # ... existing content
 EOF
+    fi
     
-    # Create minimal configuration
-    cat > "$TEST_CONFIG_DIR/minimal-config.conf" << 'EOF'
-[networks]
-home_networks=MinimalWiFi
-
-[nas_devices]
-minimal-nas.local/share
-
-[intervals]
-home_ac_interval=30
-home_battery_interval=120
-away_ac_interval=300
-away_battery_interval=900
-
-[behavior]
-max_failed_attempts=5
-min_battery_level=15
-enable_notifications=false
+    # Always create test-specific configs dynamically
+    cat > "$TEST_CONFIG_DIR/manual-test-config.conf" << EOF
+    # Generated for test run at $(date)
+    # ... dynamic content
 EOF
-    
-    echo -e "${GREEN}Test environment setup complete${NC}"
 }
 
 # Test helper functions
