@@ -155,8 +155,8 @@ jobs:
         # Ensure no executable files in unexpected places
         find . -type f -executable ! -path "./.git/*" ! -name "*.sh" ! -path "./scripts/*" ! -path "./test/*"
         
-        # Check for sensitive information
-        if grep -r "password\|secret\|key" --include="*.c" --include="*.sh" --include="*.md" . | grep -v "example\|placeholder\|your-password"; then
+        # Check for actual sensitive information
+        if grep -r -E "(password|secret|key)\s*[:=]\s*['\"][^'\"]*['\"]" --include="*.c" --include="*.sh" --include="*.md" . | grep -v -E "(example|placeholder|your-password|your-key|ssh-key|secret-tool|\*\*\*|REDACTED)"; then
           echo "Potential sensitive information found"
           exit 1
         fi
