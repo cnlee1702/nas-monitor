@@ -94,7 +94,6 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Test build in container
-      - name: Test build in container
       run: |
         docker run --rm -v $PWD:/workspace -w /workspace \
           -e DEBIAN_FRONTEND=noninteractive \
