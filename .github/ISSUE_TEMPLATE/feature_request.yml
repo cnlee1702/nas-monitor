@@ -1,0 +1,137 @@
+name: Feature Request
+description: Suggest a new feature or enhancement for NAS Monitor
+title: "[Feature] "
+labels: ["enhancement", "needs-discussion"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature! Please provide as much detail as possible to help us understand your request.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or Use Case
+      description: Is your feature request related to a problem? Please describe the use case.
+      placeholder: |
+        I'm frustrated when...
+        I need to be able to...
+        It would be helpful if...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution you'd like to see
+      placeholder: I would like NAS Monitor to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Describe any alternative solutions or workarounds you've considered
+      placeholder: |
+        I've tried...
+        Another approach could be...
+        Currently I work around this by...
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this feature to you?
+      options:
+        - Low - Nice to have
+        - Medium - Would improve my workflow
+        - High - Needed for my use case
+        - Critical - Blocking my adoption of NAS Monitor
+    validations:
+      required: true
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Estimated Complexity
+      description: How complex do you think this feature would be to implement?
+      options:
+        - Low - Small change or addition
+        - Medium - Moderate development effort
+        - High - Significant new functionality
+        - Unknown - I'm not sure
+
+  - type: checkboxes
+    id: feature_type
+    attributes:
+      label: Feature Type
+      description: What type of feature is this? (Select all that apply)
+      options:
+        - label: GUI/Interface improvement
+        - label: Configuration option
+        - label: Performance enhancement
+        - label: New protocol/NAS support
+        - label: Power management
+        - label: Network detection
+        - label: Logging/monitoring
+        - label: Integration with other software
+        - label: Security enhancement
+        - label: Documentation improvement
+
+  - type: textarea
+    id: technical_details
+    attributes:
+      label: Technical Details
+      description: Any technical specifications or implementation ideas
+      placeholder: |
+        This could work by...
+        It might require changes to...
+        Similar to how other tools handle...
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Examples
+      description: Provide examples of how this feature would be used
+      placeholder: |
+        Example 1: When I connect to my office network...
+        Example 2: For users with multiple NAS devices...
+        Example 3: Configuration would look like...
+
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: Links to similar features in other software or relevant documentation
+      placeholder: |
+        Similar to: [software name](URL)
+        Reference: [documentation](URL)
+        Discussion: [forum/reddit](URL)
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      description: Would you be interested in contributing to this feature?
+      options:
+        - label: I would like to help implement this feature
+        - label: I could help test this feature
+        - label: I could help with documentation for this feature
+        - label: I can provide detailed feedback during development
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      description: Please confirm you have done the following
+      options:
+        - label: I have searched existing issues to make sure this isn't a duplicate
+          required: true
+        - label: I have checked the documentation to see if this functionality already exists
+          required: true
+        - label: I have considered whether this fits the scope and goals of NAS Monitor
+          required: true

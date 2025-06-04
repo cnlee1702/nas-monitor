@@ -1,0 +1,34 @@
+[Unit]
+Description=Power-aware NAS Monitor
+Documentation=https://github.com/yourusername/nas-monitor
+After=graphical-session.target network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/nas-monitor.sh
+Restart=always
+RestartSec=30
+
+# Environment
+Environment=DISPLAY=:0
+Environment=XDG_RUNTIME_DIR=%h/.local/share
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%h/.config/nas-monitor %h/.local/share
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=nas-monitor
+
+# Resource limits
+MemoryHigh=50M
+MemoryMax=100M
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,166 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up build environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential libgtk-3-dev pkg-config
+
+    - name: Extract version
+      id: version
+      run: |
+        VERSION=${GITHUB_REF#refs/tags/}
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "tag=${VERSION#v}" >> $GITHUB_OUTPUT
+
+    - name: Build project
+      run: |
+        make clean
+        make all
+
+    - name: Run tests
+      run: |
+        cd test
+        ./run-tests.sh --quick
+
+    - name: Create source package
+      run: |
+        make package
+        ls -la dist/
+
+    - name: Generate changelog
+      id: changelog
+      run: |
+        if [ -f CHANGELOG.md ]; then
+          # Extract changelog for this version
+          awk '/^## \['"${{ steps.version.outputs.tag }}"'\]/{flag=1; next} /^## \[/{flag=0} flag' CHANGELOG.md > release_notes.md
+        else
+          echo "Release ${{ steps.version.outputs.version }}" > release_notes.md
+          echo "" >> release_notes.md
+          echo "See commit history for changes in this release." >> release_notes.md
+        fi
+
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.version.outputs.version }}
+        release_name: NAS Monitor ${{ steps.version.outputs.version }}
+        body_path: release_notes.md
+        draft: false
+        prerelease: ${{ contains(steps.version.outputs.version, '-') }}
+
+    - name: Upload source package
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: dist/nas-monitor-${{ steps.version.outputs.tag }}.tar.gz
+        asset_name: nas-monitor-${{ steps.version.outputs.tag }}.tar.gz
+        asset_content_type: application/gzip
+
+  test-installation:
+    name: Test Installation on ${{ matrix.os }}
+    runs-on: ubuntu-latest
+    needs: create-release
+    strategy:
+      matrix:
+        os: [ubuntu:20.04, ubuntu:22.04, fedora:38, debian:11]
+    
+    steps:
+    - name: Test installation in container
+      run: |
+        docker run --rm -v $PWD:/workspace ${{ matrix.os }} bash -c "
+          # Install dependencies based on distro
+          if command -v apt-get >/dev/null; then
+            apt-get update
+            apt-get install -y curl build-essential libgtk-3-dev pkg-config git
+          elif command -v dnf >/dev/null; then
+            dnf install -y curl gcc make gtk3-devel pkgconfig git
+          fi
+          
+          # Download and test installation
+          curl -L https://github.com/${{ github.repository }}/archive/refs/tags/${{ github.ref_name }}.tar.gz -o nas-monitor.tar.gz
+          tar -xzf nas-monitor.tar.gz
+          cd nas-monitor-*
+          
+          # Test build
+          make clean && make all
+          
+          # Test installation
+          make install
+          
+          # Verify installation
+          test -f ~/.local/bin/nas-monitor.sh
+          test -f ~/.local/bin/nas-config-gui
+          
+          echo 'Installation test successful on ${{ matrix.os }}'
+        "
+
+  update-documentation:
+    name: Update Documentation
+    runs-on: ubuntu-latest
+    needs: create-release
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Update version references
+      run: |
+        VERSION=${{ github.ref_name }}
+        
+        # Update README.md version references
+        sed -i "s/Version: [0-9]\+\.[0-9]\+\.[0-9]\+/Version: ${VERSION#v}/g" README.md || true
+        
+        # Update documentation version references
+        find docs/ -name "*.md" -exec sed -i "s/nas-monitor-[0-9]\+\.[0-9]\+\.[0-9]\+/nas-monitor-${VERSION#v}/g" {} \; || true
+        
+        # Check if any changes were made
+        if git diff --quiet; then
+          echo "No version references to update"
+        else
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Update version references to $VERSION" || true
+          git push || true
+        fi
+
+  notify:
+    name: Notify Release
+    runs-on: ubuntu-latest
+    needs: [create-release, test-installation]
+    if: always()
+    
+    steps:
+    - name: Notify success
+      if: needs.create-release.result == 'success' && needs.test-installation.result == 'success'
+      run: |
+        echo "✅ Release ${{ github.ref_name }} created and tested successfully!"
+        echo "📦 Source package available for download"
+        echo "🧪 Installation tested on multiple distributions"
+
+    - name: Notify failure
+      if: needs.create-release.result == 'failure' || needs.test-installation.result == 'failure'
+      run: |
+        echo "❌ Release ${{ github.ref_name }} failed!"
+        echo "Please check the workflow logs for details."
+        exit 1

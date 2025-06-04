@@ -1,0 +1,205 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
+
+jobs:
+  test:
+    name: Test on ${{ matrix.os }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, ubuntu-22.04]
+        
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up test environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential libgtk-3-dev pkg-config \
+          libglib2.0-bin shellcheck bc
+
+    - name: Check shell script syntax
+      run: |
+        find . -name "*.sh" -type f -exec shellcheck {} \;
+
+    - name: Test build
+      run: |
+        make clean
+        make all
+
+    - name: Run unit tests
+      run: |
+        cd test
+        ./unit-tests.sh
+
+    - name: Run integration tests
+      run: |
+        cd test
+        ./integration-test.sh
+
+    - name: Check installation
+      run: |
+        make install
+        # Verify installed files
+        test -f ~/.local/bin/nas-monitor.sh
+        test -f ~/.local/bin/nas-config-gui
+        test -f ~/.config/systemd/user/nas-monitor.service
+
+  lint:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y shellcheck cppcheck
+
+    - name: Lint shell scripts
+      run: |
+        find . -name "*.sh" -type f -exec shellcheck {} \;
+
+    - name: Lint C code
+      run: |
+        find . -name "*.c" -type f -exec cppcheck --enable=all --std=c99 {} \;
+
+    - name: Check for TODO/FIXME comments
+      run: |
+        if grep -r "TODO\|FIXME\|XXX" --include="*.c" --include="*.sh" .; then
+          echo "Found TODO/FIXME comments - please review"
+          exit 1
+        fi
+
+  build-distributions:
+    name: Build on ${{ matrix.distro }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        distro: [ubuntu:20.04, ubuntu:22.04, fedora:38, debian:11]
+        
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Test build in container
+      run: |
+        docker run --rm -v $PWD:/workspace -w /workspace ${{ matrix.distro }} \
+          bash -c "
+          if command -v apt-get >/dev/null; then
+            apt-get update
+            apt-get install -y build-essential libgtk-3-dev pkg-config make
+          elif command -v dnf >/dev/null; then
+            dnf install -y gcc make gtk3-devel pkgconfig
+          fi
+          make clean && make all
+          "
+
+  performance:
+    name: Performance Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up test environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential libgtk-3-dev pkg-config bc
+
+    - name: Build project
+      run: |
+        make clean
+        make all
+        make install
+
+    - name: Run performance tests
+      run: |
+        cd test
+        ./performance-test.sh
+
+    - name: Check resource usage
+      run: |
+        # Start service in background
+        systemctl --user start nas-monitor.service || true
+        sleep 10
+        
+        # Check resource usage
+        if pgrep -f nas-monitor >/dev/null; then
+          echo "Service is running"
+          ps aux | grep nas-monitor || true
+        fi
+        
+        # Stop service
+        systemctl --user stop nas-monitor.service || true
+
+  security:
+    name: Security Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Check file permissions
+      run: |
+        # Ensure no executable files in unexpected places
+        find . -type f -executable ! -path "./.git/*" ! -name "*.sh" ! -path "./scripts/*" ! -path "./test/*"
+        
+        # Check for sensitive information
+        if grep -r "password\|secret\|key" --include="*.c" --include="*.sh" --include="*.md" . | grep -v "example\|placeholder\|your-password"; then
+          echo "Potential sensitive information found"
+          exit 1
+        fi
+
+    - name: Validate systemd service file
+      run: |
+        # Basic systemd service file validation
+        if [ -f "systemd/nas-monitor.service" ]; then
+          grep -q "\[Unit\]" systemd/nas-monitor.service
+          grep -q "\[Service\]" systemd/nas-monitor.service
+          grep -q "\[Install\]" systemd/nas-monitor.service
+        fi
+
+  documentation:
+    name: Documentation Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Check documentation completeness
+      run: |
+        # Check that key documentation files exist
+        test -f README.md
+        test -f docs/installation.md
+        test -f docs/configuration.md
+        test -f docs/troubleshooting.md
+        test -f CONTRIBUTING.md
+        test -f LICENSE
+
+    - name: Validate markdown
+      run: |
+        # Basic markdown validation
+        find . -name "*.md" -exec grep -l "^# " {} \; | wc -l
+
+    - name: Check for broken links
+      run: |
+        # Simple check for obviously broken internal links
+        find . -name "*.md" -exec grep -H "\]\(" {} \; | grep -v "http" | while read line; do
+          file=$(echo "$line" | cut -d: -f1)
+          link=$(echo "$line" | sed 's/.*](\([^)]*\)).*/\1/')
+          if [[ "$link" == *".md"* ]] && [ ! -f "$(dirname "$file")/$link" ] && [ ! -f "$link" ]; then
+            echo "Potentially broken link in $file: $link"
+          fi
+        done

@@ -1,0 +1,115 @@
+name: Question or Support
+description: Ask a question about using or configuring NAS Monitor
+title: "[Question] "
+labels: ["question", "support"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have a question about NAS Monitor? We're here to help!
+        
+        **Note**: For general discussions, consider using [GitHub Discussions](https://github.com/yourusername/nas-monitor/discussions) instead.
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your Question
+      description: What would you like to know?
+      placeholder: How do I...? Why does...? What's the best way to...?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Question Category
+      description: What is your question about?
+      options:
+        - Installation and setup
+        - Configuration
+        - Troubleshooting
+        - Performance optimization
+        - Integration with other software
+        - Hardware compatibility
+        - Network configuration
+        - Power management
+        - General usage
+        - Development/contributing
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context and Setup
+      description: Tell us about your setup and what you're trying to achieve
+      placeholder: |
+        My setup:
+        - OS: Ubuntu 22.04
+        - NAS: Synology DS920+
+        - Network: Home WiFi + Ethernet
+        
+        What I'm trying to do:
+        - Configure automatic mounting for...
+        - Set up power management for...
+        - Troubleshoot issue with...
+
+  - type: textarea
+    id: attempted
+    attributes:
+      label: What Have You Tried?
+      description: What steps have you already taken to solve this?
+      placeholder: |
+        I have:
+        - Read the documentation sections: ...
+        - Tried the following configurations: ...
+        - Searched for similar issues: ...
+        - Tested manually: ...
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Current Configuration
+      description: Your current configuration (if relevant, remove sensitive info)
+      placeholder: |
+        [networks]
+        home_networks=MyNetwork,
+
+        [nas_devices]
+        nas.local/share
+      render: ini
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant Logs
+      description: Any error messages or log output (if applicable)
+      placeholder: |
+        journalctl --user -u nas-monitor.service --since "1 hour ago"
+        (paste relevant output here)
+      render: shell
+
+  - type: checkboxes
+    id: documentation
+    attributes:
+      label: Documentation Check
+      description: Have you checked the documentation?
+      options:
+        - label: I have read the [FAQ](https://github.com/yourusername/nas-monitor/blob/master/docs/faq.md)
+        - label: I have checked the [troubleshooting guide](https://github.com/yourusername/nas-monitor/blob/master/docs/troubleshooting.md)
+        - label: I have looked at the [configuration examples](https://github.com/yourusername/nas-monitor/blob/master/docs/examples/usage-examples.md)
+        - label: I have searched existing issues and discussions
+
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: Urgency
+      description: How urgent is this question?
+      options:
+        - Low - Just curious, no rush
+        - Medium - Would like to resolve soon
+        - High - Blocking my setup/workflow
+    validations:
+      required: true

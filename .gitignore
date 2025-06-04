@@ -1,0 +1,39 @@
+# Build artifacts
+build/
+dist/
+
+# Compiled binaries (legacy - should now be in build/)
+nas-config-gui
+*.o
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Log files
+*.log
+
+# Temporary files
+/tmp/
+*.tmp
+*.temp
+
+# Configuration backups
+*.conf.backup*
+*.conf.old
+
+# Test artifacts
+test-configs/manual-test-*
+/tmp/nas-monitor-test*

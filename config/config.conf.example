@@ -1,0 +1,92 @@
+# NAS Monitor Configuration File
+# Power-aware network storage monitoring for Linux laptops
+#
+# Edit this file to match your network and NAS setup.
+# After making changes, restart the service:
+#   systemctl --user restart nas-monitor.service
+
+[networks]
+# Comma-separated list of home network SSIDs
+# Include an empty string for wired connections
+# Examples:
+#   home_networks=MyWiFi,MyWiFi-5GHz,
+#   home_networks=Home-Network,Guest-Network
+home_networks=Your-Home-WiFi,Your-Home-5G,
+
+[nas_devices]
+# List your NAS devices in the format: hostname/share
+# One device per line, no quotes needed
+# Examples:
+#   my-nas.local/home
+#   backup-server.local/backups
+#   192.168.1.100/media
+#   synology-ds920.local/documents
+
+# Add your NAS devices below:
+# my-nas.local/home
+# backup-nas.local/media
+
+[intervals]
+# Check intervals in seconds based on power source and network location
+# Lower values = more responsive, higher battery usage
+# Higher values = better battery life, less responsive
+
+# When connected to home network on AC power
+home_ac_interval=15
+
+# When connected to home network on battery
+home_battery_interval=60
+
+# When connected to other networks on AC power
+away_ac_interval=180
+
+# When connected to other networks on battery
+away_battery_interval=600
+
+[behavior]
+# Maximum failed connection attempts before backing off
+# Higher values = more persistent, lower values = fail faster
+max_failed_attempts=3
+
+# Minimum battery level (%) to attempt network operations
+# Below this level, all network activity is suspended
+min_battery_level=10
+
+# Enable desktop notifications for mount/unmount events
+# true = show notifications, false = silent operation
+enable_notifications=true
+
+# Advanced Settings (uncomment to modify)
+# =========================================
+
+# Timeout for network connectivity checks (seconds)
+# network_timeout=3
+
+# Log level: debug, info, warning, error
+# log_level=info
+
+# Maximum log file size (MB)
+# max_log_size=10
+
+# Example configurations for common scenarios:
+# ============================================
+
+# Home office setup with reliable power:
+# home_ac_interval=10
+# home_battery_interval=30
+# away_ac_interval=120
+# away_battery_interval=300
+
+# Mobile user with frequent travel:
+# home_ac_interval=20
+# home_battery_interval=120
+# away_ac_interval=300
+# away_battery_interval=900
+# min_battery_level=15
+
+# Power-conscious setup for maximum battery life:
+# home_ac_interval=30
+# home_battery_interval=180
+# away_ac_interval=600
+# away_battery_interval=1800
+# min_battery_level=20

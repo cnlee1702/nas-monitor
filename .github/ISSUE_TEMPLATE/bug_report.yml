@@ -1,0 +1,170 @@
+name: Bug Report
+description: Report a bug or issue with NAS Monitor
+title: "[Bug] "
+labels: ["bug", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out the information below to help us diagnose and fix the issue.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+      placeholder: Describe the issue you're experiencing...
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: Tell us how to reproduce this behavior
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: Describe what you expected to happen...
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened instead?
+      placeholder: Describe what actually happened...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      description: What operating system are you using?
+      options:
+        - Ubuntu 22.04 LTS
+        - Ubuntu 20.04 LTS
+        - Linux Mint 21
+        - Linux Mint 20
+        - Debian 11 (Bullseye)
+        - Debian 12 (Bookworm)
+        - Fedora 38
+        - Fedora 39
+        - Arch Linux
+        - openSUSE Leap
+        - Other (please specify in additional context)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: desktop
+    attributes:
+      label: Desktop Environment
+      description: What desktop environment are you using?
+      options:
+        - GNOME
+        - Cinnamon
+        - XFCE
+        - KDE Plasma
+        - MATE
+        - Other (please specify in additional context)
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: NAS Monitor Version
+      description: What version of NAS Monitor are you using?
+      placeholder: "1.0.0"
+    validations:
+      required: true
+
+  - type: textarea
+    id: nas_info
+    attributes:
+      label: NAS Information
+      description: Information about your NAS setup
+      placeholder: |
+        NAS Brand/Model: Synology DS920+
+        Hostname: synology.local
+        Shares: home, media
+        Connection: WiFi/Ethernet
+    validations:
+      required: true
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Configuration
+      description: Your configuration file (remove sensitive information like passwords)
+      placeholder: |
+        [networks]
+        home_networks=MyWiFi,MyWiFi-5G,
+
+        [nas_devices]
+        nas.local/share
+
+        [intervals]
+        home_ac_interval=15
+        ...
+      render: ini
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Relevant log output from the service
+      placeholder: |
+        Run: journalctl --user -u nas-monitor.service --since "1 hour ago"
+        Paste the output here (remove any sensitive information)
+      render: shell
+
+  - type: textarea
+    id: service_status
+    attributes:
+      label: Service Status
+      description: Output of systemctl status command
+      placeholder: |
+        Run: systemctl --user status nas-monitor.service
+        Paste the output here
+      render: shell
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other context about the problem
+      placeholder: |
+        - Recent system updates
+        - Network configuration changes
+        - Other software that might be related
+        - Screenshots (if applicable)
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      description: Please confirm you have done the following
+      options:
+        - label: I have searched existing issues to make sure this isn't a duplicate
+          required: true
+        - label: I have tried the troubleshooting steps in the documentation
+          required: true
+        - label: I have included all requested information above
+          required: true
+        - label: I have removed sensitive information (passwords, private hostnames, etc.)
+          required: true

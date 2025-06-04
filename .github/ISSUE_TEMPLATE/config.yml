@@ -1,0 +1,17 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 Documentation
+    url: https://github.com/yourusername/nas-monitor/tree/master/docs
+    about: Check our comprehensive documentation for installation, configuration, and troubleshooting guides
+  
+  - name: 💬 GitHub Discussions
+    url: https://github.com/yourusername/nas-monitor/discussions
+    about: Ask questions, share configurations, and discuss ideas with the community
+  
+  - name: 🔍 Search Existing Issues
+    url: https://github.com/yourusername/nas-monitor/issues?q=is%3Aissue
+    about: Search existing issues to see if your question has already been answered
+  
+  - name: 📖 FAQ
+    url: https://github.com/yourusername/nas-monitor/blob/master/docs/faq.md
+    about: Frequently asked questions and common solutions
