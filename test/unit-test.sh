@@ -23,7 +23,7 @@ TESTS_PASSED=0
 TESTS_FAILED=0
 
 # Setup test environment
-setup_tests() {setup_tests() {
+setup_tests() {
     echo -e "${BLUE}Setting up test environment...${NC}"
     
     mkdir -p "$TEST_CONFIG_DIR"
